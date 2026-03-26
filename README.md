@@ -51,14 +51,16 @@ terraform apply -var="project_id=YOUR_PROJECT_ID"
 
 ```bash
 # Install dependencies
-pip install -r requirements.txt
+rm -rf .venv
+uv venv
+uv pip install -r requirements.txt
 
 # Authenticate Application Default Credentials (ADC) for Firestore access
 gcloud auth application-default login
 gcloud auth application-default set-quota-project YOUR_PROJECT_ID
 
 # Launch the app
-streamlit run src/app.py
+uv run streamlit run src/app.py
 ```
 
 ### 3. Deploy to Cloud Run
