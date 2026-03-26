@@ -1,19 +1,22 @@
 from google.cloud import firestore
 from vertexai.generative_models import GenerativeModel
 
+from config import DATABASE_ID, PROJECT_ID, GEMINI_FLASH_MODEL
+
+
 class VocabAgent:
     def __init__(self):
-        self.model = GenerativeModel("gemini-2.5-flash")
+        self.model = GenerativeModel(GEMINI_FLASH_MODEL)
         self.system_prompt = """
         You are a Lexicographer. Your job is to extract Gen Z slang from a provided translation 
         and create a 'Glossary' for a Gen X/Boomer audience.
-        
+
         Format your response as a simple list:
         - **Slang Word**: Meaning in standard corporate English.
         """
         self.db = firestore.Client(
-            project="qwiklabs-asl-01-964394115550",
-            database="gen-x-gen-z-vocabulary"
+            project=PROJECT_ID,
+            database=DATABASE_ID
         )
 
     def create_glossary(self, original, translation):
@@ -33,8 +36,7 @@ class VocabAgent:
         Parses glossary and saves each word as a document in Firestore
         """
         try:
-            lines = glossary_text.split("\
-")
+            lines = glossary_text.splitlines()
             for line in lines:
                 if "**:" in line or "**: " in line:
                     clean_line = line.replace("- **", "").replace("**", "")

@@ -1,9 +1,10 @@
 from vertexai.generative_models import GenerativeModel
+from config import GEMINI_FLASH_MODEL
 
 class SafetyAgent:
     def __init__(self):
         # We use Flash here because it's fast and perfect for classification
-        self.model = GenerativeModel("gemini-2.5-flash")
+        self.model = GenerativeModel(GEMINI_FLASH_MODEL)
         self.system_prompt = """
         You are a Content Safety Moderator. Your job is to inspect text for:
         1. Violence or self-harm
